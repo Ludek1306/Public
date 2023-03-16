@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Questions</title>
+    <link rel="stylesheet" href="./assets/style.css" />
+  </head>
+
+  <body>
+    <div id="questions-container">
+      <h2>Manage Questions</h2>
+      <div id="manage-questions-container">
+        <ul id="questions-list"></ul>
+      </div>
+
+      <h2>Create a New Question</h2>
+      <form>
+        <input
+          type="text"
+          name="question"
+          class="answers-input"
+          id="questionText"
+          placeholder="Type your question here"
+          required
+        />
+        <h3>Answers:</h3>
+        <div>
+          <input
+            type="text"
+            class="answers-input"
+            id="answer-1"
+            placeholder="Type your answer here"
+            required
+          />
+          <input name="is-correct" id="is-correct1" type="radio" />
+        </div>
+        <div>
+          <input
+            type="text"
+            class="answers-input"
+            id="answer-2"
+            placeholder="Type your answer here"
+            required
+          />
+          <input name="is-correct" id="is-correct2" type="radio" />
+        </div>
+        <div>
+          <input
+            type="text"
+            class="answers-input"
+            id="answer-3"
+            placeholder="Type your answer here"
+            required
+          />
+          <input name="is-correct" id="is-correct3" type="radio" />
+        </div>
+        <div>
+          <input
+            type="text"
+            class="answers-input"
+            id="answer-4"
+            placeholder="Type your answer here"
+            required
+          />
+          <input name="is-correct" id="is-correct4" type="radio" />
+        </div>
+        <button id="submit-question">SUBMIT</button>
+      </form>
+      <a class="redirect" href="http://localhost:8080/game">BACK TO GAME</a>
+    </div>
+    <script src="./scripts/questions.js"></script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game</title>
+    <link rel="stylesheet" href="./assets/style.css" />
+  </head>
+
+  <body>
+    <div id="quiz-container">
+      <div id="score-number">Score: 0</div>
+      <div id="answer-value">
+        <div id="correct-color">
+          <span>CORRECT!</span><button class="answer">NEXT</button>
+        </div>
+        <div id="wrong-color">
+          <span>WRONG!</span><button class="answer">NEXT</button>
+        </div>
+      </div>
+      <div id="question"></div>
+      <div id="buttons-container">
+        <button class="answer" id="answer1"></button><br />
+        <button class="answer" id="answer2"></button><br />
+        <button class="answer" id="answer3"></button><br />
+        <button class="answer" id="answer4"></button><br />
+      </div>
+      <a class="redirect" href="http://localhost:8080/questions"
+        >MANAGE QUESTIONS</a
+      >
+    </div>
+    <script src="./scripts/game.js"></script>
+  </body>
+</html>
