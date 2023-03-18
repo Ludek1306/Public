@@ -1,6 +1,6 @@
 # List of Project
 
-Projects descriptions in the files of every project.
+Each project has a description file in its directory.
 
 ## Quiz Application
 
