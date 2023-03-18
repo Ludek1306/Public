@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reddit Main Page</title>
+    <link rel="stylesheet" href="/public/assets/style.css" type="text/css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <header>SPACE</header>
+    <main class="main-container">
+      <div id="posts-container">
+        <% posts.forEach((post) => { %>
+
+        <article class="single-post-container">
+          <div class="arrow-container">
+            <form method="POST" action="/posts/<%= post.id %>/upvote">
+              <button type="submit" class="invisible-button">
+                <img
+                  class="up-arrow"
+                  src="/public/assets/img/upvote.png"
+                  alt=""
+                />
+              </button>
+            </form>
+            <div class="score"><%= post.score %></div>
+            <form method="POST" action="/posts/<%= post.id %>/downvote">
+              <button type="submit" class="invisible-button">
+                <img
+                  class="down-arrow"
+                  src="/public/assets/img/downvote.png"
+                  alt=""
+                />
+              </button>
+            </form>
+          </div>
+
+          <div class="post-text-container">
+            <div>
+              <a class="post-anchor" href=""><%= post.title %></a>
+              <a class="post-url" href="<%= post.url %>"><%= post.url %></a>
+            </div>
+            <div class="post-info">
+              <span class="date"
+                >submitted <%= post.formatted_timestamp %></span
+              >
+              <span class="user">by SpaceBot</span>
+            </div>
+
+            <div class="post-modification">
+              <input type="button" value="modify" />
+              <form method="POST" action="/posts/<%= post.id %>/delete">
+                <input type="button" value="remove" />
+              </form>
+            </div>
+          </div>
+        </article>
+        <% }) %>
+      </div>
+
+      <div class="submit-container">
+        <form method="GET" action="/posts/new">
+          <input
+            id="redirect-to-new-post"
+            type="submit"
+            value="SUBMIT A NEW POST"
+          />
+        </form>
+
+        <div class="side-panel-header">ABOUT r/space</div>
+        <ul class="side-panel-description">
+          Share & discuss informative content on:
+          <li>Astrophysics</li>
+          <li>Cosmology</li>
+          <li>Space Exploration</li>
+          <li>Planetary Science</li>
+          <li>Astrobiology</li>
+        </ul>
+      </div>
+    </main>
+    <script src="/public/index.js"></script>
+  </body>
+</html>

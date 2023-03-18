@@ -1,0 +1,184 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Lato", sans-serif;
+}
+
+input {
+  background-color: white;
+  border: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+header {
+  width: 100%x;
+  height: 340px;
+  background-image: url("./img/space.jpg");
+  color: white;
+  font-size: 60px;
+  letter-spacing: 60px;
+  text-align: center;
+  line-height: 340px;
+}
+
+main {
+  background-color: rgb(77, 77, 77);
+  display: flex;
+  justify-content: center;
+  min-height: 1000px;
+}
+
+#posts-container {
+  margin-top: 20px;
+  width: 640px;
+  flex-direction: column;
+  /* display: inline-block; */
+}
+
+.arrow-container {
+  width: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(243, 247, 247);
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.up-arrow,
+.down-arrow {
+  height: 20px;
+  width: 20px;
+}
+
+.single-post-container {
+  background-color: white;
+  border-radius: 4px;
+  min-height: 120px;
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.post-text-container {
+  width: 530px;
+  padding: 10px;
+}
+
+.post-anchor {
+  padding: 0 10px 0 0;
+  color: green;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.post-info {
+  font-size: 0.8em;
+  margin-top: 10px;
+}
+
+.submit-container {
+  width: 320px;
+  margin-top: 20px;
+  padding-left: 20px;
+}
+
+#redirect-to-new-post {
+  background-color: rgb(119, 174, 236);
+  color: white;
+  width: 320px;
+  height: 40px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+#redirect-to-new-post:hover {
+  background-color: rgb(139, 185, 237);
+}
+
+li {
+  margin: 10px 5px 5px 5px;
+}
+
+.invisible-button {
+  border: none;
+  background-color: rgb(243, 247, 247);
+}
+
+.side-panel-header {
+  background-color: rgb(214, 222, 230);
+  height: 40px;
+  line-height: 40px;
+  font-size: 0.9em;
+  font-weight: bold;
+  padding-left: 20px;
+  margin: 0;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.side-panel-description {
+  background-color: rgb(213, 214, 214);
+  margin-top: 0;
+  padding: 20px 0 20px 40px;
+  height: auto;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+#new-post-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 500px;
+  height: 240px;
+  background-color: white;
+  margin-top: 20px;
+  padding-top: 10px;
+  border-radius: 4px;
+}
+
+.submit-message {
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.new-post-input-container {
+  margin: 10px;
+}
+
+.new-post-input-label {
+  font-size: 16px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.new-post-input {
+  background-color: rgb(192, 190, 190);
+  font-size: 16px;
+  border-radius: 4px;
+  padding: 5px;
+  width: 320px;
+}
+
+.submit-button {
+  height: 40px;
+  width: 100px;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 20px;
+  background-color: rgb(77, 77, 77);
+}
+
+.submit-button:hover {
+  background-color: rgb(101, 100, 100);
+}
