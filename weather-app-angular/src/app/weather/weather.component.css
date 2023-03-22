@@ -1,0 +1,14 @@
+.weather-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+p {
+  margin: 5px;
+}
+
+.check-units-radio {
+  display: flex;
+  justify-content: space-around;
+}

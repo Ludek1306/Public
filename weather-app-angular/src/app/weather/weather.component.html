@@ -1,0 +1,63 @@
+<div>
+  <form [formGroup]="weatherForm">
+    <div class="mb-3">
+      <label for="input-city" class="form-label">City:</label>
+      <input
+        #city
+        type="text"
+        class="form-control"
+        id="input-city"
+        formControlName="item"
+      />
+    </div>
+    <button
+      type="submit"
+      (click)="changeCity(city.value)"
+      class="btn btn-primary"
+      [disabled]="weatherForm.invalid"
+    >
+      Submit
+    </button>
+  </form>
+</div>
+
+<div>
+  <div class="weather-container">
+    <div class="card text-white bg-primary m-5" style="max-width: 18rem">
+      <div class="card-header text-center">
+        <h2>{{ cityName }}</h2>
+        <img src="{{ iconURL }}" alt="weather image" />
+      </div>
+      <div class="card-body">
+        <p class="card-text">Summary: {{ summary }}</p>
+        <p class="card-text">
+          Temperature: {{ temperature }} °{{ units == "imperial" ? "F" : "C" }}
+        </p>
+        <p class="card-text">
+          Feels like: {{ feelsLikeTemp }} °{{ units == "imperial" ? "F" : "C" }}
+        </p>
+        <p class="card-text">Pressure: {{ pressure }} hPa</p>
+        <p class="card-text">humidity: {{ humidity }} %</p>
+      </div>
+      <div class="card-footer bg-transparent border-success">
+        <form class="check-units-radio">
+          <label class="radio-inline">
+            <input
+              type="radio"
+              (change)="unitsChange()"
+              name="unitsRadioButtons"
+              [checked]="units == 'metric' ? true : false"
+            />°C
+          </label>
+          <label class="radio-inline">
+            <input
+              type="radio"
+              (change)="unitsChange()"
+              name="unitsRadioButtons"
+            />°F
+          </label>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
