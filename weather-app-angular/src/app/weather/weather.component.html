@@ -1,7 +1,9 @@
-<div>
+<div class="input-container">
   <form [formGroup]="weatherForm">
     <div class="mb-3">
-      <label for="input-city" class="form-label">City:</label>
+      <label for="input-city" class="form-label"
+        >Search City:<span id="wrong-city">{{ cityNotFound }}</span></label
+      >
       <input
         #city
         type="text"
@@ -12,7 +14,7 @@
     </div>
     <button
       type="submit"
-      (click)="changeCity(city.value)"
+      (click)="addCity()"
       class="btn btn-primary"
       [disabled]="weatherForm.invalid"
     >
@@ -21,42 +23,34 @@
   </form>
 </div>
 
-<div>
-  <div class="weather-container">
-    <div class="card text-white bg-primary m-5" style="max-width: 18rem">
+<div class="city-empty" *ngIf="!citiesList.length">
+  There is no selected city.
+</div>
+
+<div class="weather-container">
+  <div *ngFor="let singleCity of citiesList; let i = index">
+    <div class="card text-white bg-primary m-2" style="max-width: 18rem">
       <div class="card-header text-center">
-        <h2>{{ cityName }}</h2>
-        <img src="{{ iconURL }}" alt="weather image" />
+        <h2>{{ singleCity.name }}</h2>
+        <img src="{{ singleCity.iconURL }}" alt="weather image" />
       </div>
       <div class="card-body">
-        <p class="card-text">Summary: {{ summary }}</p>
-        <p class="card-text">
-          Temperature: {{ temperature }} °{{ units == "imperial" ? "F" : "C" }}
-        </p>
-        <p class="card-text">
-          Feels like: {{ feelsLikeTemp }} °{{ units == "imperial" ? "F" : "C" }}
-        </p>
-        <p class="card-text">Pressure: {{ pressure }} hPa</p>
-        <p class="card-text">humidity: {{ humidity }} %</p>
+        <p class="card-text">Summary: {{ singleCity.summary }}</p>
+        <p class="card-text">Temperature: {{ singleCity.temperature }} °C</p>
+        <p class="card-text">Feels like: {{ singleCity.feelsLikeTemp }} °C</p>
+        <p class="card-text">Pressure: {{ singleCity.pressure }} hPa</p>
+        <p class="card-text">humidity: {{ singleCity.humidity }} %</p>
       </div>
       <div class="card-footer bg-transparent border-success">
-        <form class="check-units-radio">
-          <label class="radio-inline">
-            <input
-              type="radio"
-              (change)="unitsChange()"
-              name="unitsRadioButtons"
-              [checked]="units == 'metric' ? true : false"
-            />°C
-          </label>
-          <label class="radio-inline">
-            <input
-              type="radio"
-              (change)="unitsChange()"
-              name="unitsRadioButtons"
-            />°F
-          </label>
-        </form>
+        <div class="delete-button">
+          <button
+            type="button"
+            class="btn btn-light m-3"
+            (click)="deleteCity(i)"
+          >
+            Delete
+          </button>
+        </div>
       </div>
     </div>
   </div>

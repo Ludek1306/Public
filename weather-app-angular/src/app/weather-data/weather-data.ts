@@ -1,9 +1,9 @@
 export interface Weather {
-  city: string;
+  name: string;
+  temperature: number;
+  feelsLikeTemp: number;
+  humidity: number;
+  pressure: number;
+  summary: string;
+  iconURL: string;
 }
-
-export const weatherList: Weather[] = [
-  { city: 'Brno' },
-  { city: 'Prag' },
-  { city: 'Berlin' },
-];
