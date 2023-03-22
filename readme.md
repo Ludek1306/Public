@@ -25,3 +25,15 @@ The ToDo application is a simple web application that allows users to manage the
 ## Techologies Used
 
 Angular CLI, Angular Materials and Bootstrap.
+
+# WeatherAppAngular
+
+The Angular CLI weather application project is a web application. It allows users to search for and display current weather information for one or multiple cities. The application also provides the ability to delete a selected city.
+
+## Technologies Used
+
+Angular CLI, Bootstrap
+
+## Weather API
+
+https://openweathermap.org/api
