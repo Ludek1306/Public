@@ -1,0 +1,287 @@
+/* width */
+::-webkit-scrollbar {
+  width: 0.2em;
+}
+
+::-webkit-scrollbar
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  height: 400px;
+  margin-top: 60px;
+  border: 1px solid darkgray;
+  /* border-radius: 4px; */
+  display: grid;
+  grid-template-columns: 150px 150px 350px;
+  grid-template-rows: repeat(8, 1fr);
+}
+
+.logo-container {
+  background-color: aqua;
+  grid-area: 1 / 1 / 3 / 2;
+  border: 1px solid black;
+}
+
+.artwork-container {
+  background-color: blueviolet;
+  grid-area: 1 / 2 / 3 / 3;
+  display: flex;
+  justify-content: end;
+}
+
+.artwork-container img {
+  width: 100px;
+}
+
+.playlist-container {
+  grid-area: 3 / 1 / 8 / 3;
+  border: 1px solid darkgray;
+}
+
+.playlist-header {
+  height: 40px;
+  width: 100%;
+  font-size: 20px;
+  font-weight: bold;
+  /* padding-left: 15px; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.playlist-header div {
+  /* height: 40px; */
+  line-height: 40px;
+}
+
+/* .playlist-header button {
+  border: none;
+  margin-right: 25px;
+  height: 24px;
+  width: 24px;
+  padding: 0;
+} */
+
+.insert-name {
+  /* display: flex;
+  align-items: center; */
+}
+
+.insert-name form {
+  display: flex;
+  align-items: center;
+}
+
+.insert-name input {
+  margin-left: 5px;
+}
+
+.add-new-playlist {
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+}
+
+/* .playlist-header img {
+  background-color: rgb(125, 211, 109);
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+} */
+
+.cross {
+  /* background-color: rgb(125, 211, 109); */
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+}
+
+.cross:hover {
+  background-color: rgb(125, 211, 109);
+}
+
+#rotate-image-on {
+  transform: rotate(45deg);
+  background-color: rgb(222, 106, 106);
+}
+
+/* .playlist-header img:hover {
+  height: 26px;
+  width: 26px;
+} */
+
+.playlist-inventory {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  height: 210px;
+  /* width: 298px; */
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+.playlist-inventory li {
+  height: 40px;
+  width: 100%;
+  line-height: 40px;
+  padding-left: 15px;
+  background-color: darkseagreen;
+  display: flex;
+  justify-content: space-between;
+}
+
+.playlist-inventory li:hover {
+  opacity: 0.6;
+}
+
+.playlist-inventory li:nth-child(even) {
+  background-color: rgb(156, 156, 156);
+}
+
+.playlist-inventory span {
+  margin-right: 25px;
+}
+
+.current-track-container {
+  /* background-color: aquamarine; */
+  grid-area: 1 / 3 / 2 / 4;
+  display: flex;
+  justify-content: space-between;
+}
+
+.current-track {
+  width: 200px;
+  padding: 10px 0 0 10px;
+}
+
+.current-track-name {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.current-track-artist {
+  font-size: 14px;
+  color: dimgray;
+}
+
+.add-to-playlist {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.add-to-favorite {
+  height: 24px;
+  width: 24px;
+  margin-left: 2px;
+  margin-bottom: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-to-favorite:hover {
+  border-radius: 50%;
+  background-color: rgb(236, 236, 100);
+}
+
+/* .add-to-actual img {
+  height: 24px;
+  width: 24px;
+} */
+
+.songs-container {
+  grid-area: 2 / 3 / 8 / 4;
+}
+
+.songs-list {
+  width: 100%;
+  height: 300px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+.songs-list li:nth-child(even) {
+  background-color: rgb(156, 156, 156);
+}
+
+.songs {
+  background-color: gainsboro;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.songs:hover {
+  opacity: 0.6;
+}
+
+.songs-id {
+  width: 30px;
+  text-align: center;
+  margin-right: 5px;
+  color: dimgray;
+}
+
+.songs-name {
+  margin-right: auto;
+}
+
+.songs-duration {
+  margin-right: 10px;
+}
+
+.control-panel-container {
+  background-color: yellow;
+  grid-area: 8 / 1 / 9 / 4;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.slider-container {
+  display: flex;
+  align-items: center;
+}
+
+.repeat-track img {
+  height: 24px;
+  width: 24px;
+}
+
+/* .controls {
+  background-color: white;
+  width: 80px;
+  display: flex;
+  justify-content: space-around;
+  padding: 5px;
+  margin-left: 15px;
+}
+
+.controls img {
+  width: 15px;
+  height: 15px;
+} */

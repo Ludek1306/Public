@@ -1,0 +1,7 @@
+[
+  { "id": 1, "title": "Favorites", "system_rank": 1 },
+  { "id": 2, "title": "Music for programming", "system_rank": 0 },
+  { "id": 3, "title": "Driving", "system_rank": 0 },
+  { "id": 4, "title": "Driving2", "system_rank": 0 },
+  { "id": 5, "title": "Dreaming", "system_rank": 0 }
+]

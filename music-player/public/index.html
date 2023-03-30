@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music Player</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+
+    <div class="container">
+      <div class="logo-container">LOGO</div>
+      <div class="artwork-container">
+        <img src="./assets/img/music-placeholder.png" alt="" />
+      </div>
+
+      <div class="playlist-container">
+        <div class="playlist-header">
+          <div class="insert-name">
+						Playlists					
+					</div>
+          <div class="add-new-playlist" onclick="addCancelPlaylist()"><img class="cross" src="./assets/img/plus.png" alt="" /></div>
+        </div>				
+					<ul class="playlist-inventory">					
+          <li>All Tracks</li>          
+        </ul>       
+      </div>			
+			
+      <div class="current-track-container">
+        <div class="current-track">
+          <div class="current-track-name">Testing name for song</div>
+          <div class="current-track-artist">Blueberry</div>
+        </div>
+        <div class="add-to-playlist">
+          <div>
+            <img class="cross" src="./assets/img/plus.png" alt="" />
+          </div>
+          <div class="add-to-favorite">
+            <img class="star" src="./assets/img/star.svg" alt="" />
+          </div>
+        </div>
+      </div>
+
+      <div class="songs-container">
+        <ul class="songs-list">
+          <li class="songs">
+            <div class="songs-id">1</div>
+            <div class="songs-name">Name of the Song</div>
+            <div class="songs-duration">3:30</div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="control-panel-container">
+        <!-- <div class="controls">
+          <img src="./assets/img/rewind.svg" alt="" />
+          <img src="./assets/img/play.svg" alt="" />          
+          <img src="./assets/img/forward.svg" alt="" />
+        </div>
+      </div> -->
+			<!-- <div class="player"> -->
+        <!-- <div class="details"> -->
+          <!-- <div class="now-playing">PLAYING x OF y</div> -->
+          <!-- <div class="track-art"></div> -->
+          <!-- <div class="track-name">Track Name</div>
+          <div class="track-artist">Track Artist</div>
+        </div> -->
+
+				<div class="prev-track" onclick="prevTrack()">
+					<img id="test2" src="./assets/img/rewind.svg" alt="" />
+				</div>
+				<div class="play-pause-track" onclick="playPauseTrack()">
+					<img src="./assets/img/play.svg" style="height: 20px" alt="" />
+				</div>
+				<div class="next-track" onclick="nextTrack()">
+					<img src="./assets/img/forward.svg" alt="" />
+				</div>
+
+        <div class="slider-container">
+          <div class="current-time">00:00</div>
+          <input
+            type="range"
+            min="1"
+            max="100"
+            value="0"
+            class="seek-slider"
+            onchange="seekTo()"
+          />
+          <div class="total-duration">00:00</div>
+        </div>
+
+				<div class="random-track" onclick="randomTrack()">
+					<img src="./assets/img/shuffle.svg" alt="" />
+				</div>
+				<div class="repeat-track" onclick="repeatTrack()">
+					<img src="./assets/img/repeat1.svg" alt="" />
+				</div>
+
+        <div class="slider-container">
+          <img src="./assets/img/volume.svg" alt="" />
+          <input
+            type="range"
+            min="1"
+            max="100"
+            value="99"
+            class="volume-slider"
+            onchange="setVolume()"
+          />
+        </div>
+
+        <!-- <div class="control-buttons">
+          
+          
+          
+        </div> -->
+      <!-- </div> -->
+    </div>
+
+		<script src="./scripts/script.js">
+			
+		</script>
+  </body>
+</html>

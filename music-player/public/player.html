@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="player">
+      <div class="wrapper">
+        <div class="details">
+          <div class="now-playing">PLAYING x OF y</div>
+          <div class="track-art"></div>
+          <div class="track-name">Track Name</div>
+          <div class="track-artist">Track Artist</div>
+        </div>
+
+        <div class="slider-container">
+          <div class="current-time">00:00</div>
+          <input
+            type="range"
+            min="1"
+            max="100"
+            value="0"
+            class="seek-slider"
+            onchange="seekTo()"
+          />
+          <div class="total-duration">00:00</div>
+        </div>
+
+        <div class="slider-container">
+          <img src="./assets/img/volume.svg" alt="" />
+          <input
+            type="range"
+            min="1"
+            max="100"
+            value="99"
+            class="volume-slider"
+            onchange="setVolume()"
+          />
+        </div>
+
+        <div class="control-buttons">
+          <div class="random-track" onclick="randomTrack()">
+            <img src="./assets/img/shuffle.svg" alt="" />
+          </div>
+          <div class="prev-track" onclick="prevTrack()">
+            <img src="./assets/img/rewind.svg" alt="" />
+          </div>
+          <div class="play-pause-track" onclick="playPauseTrack()">
+            <img src="./assets/img/play.svg" style="height: 20px" alt="" />
+          </div>
+          <div class="next-track" onclick="nextTrack()">
+            <img src="./assets/img/forward.svg" alt="" />
+          </div>
+          <div class="repeat-track" onclick="repeatTrack()">
+            <img src="" alt="R" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./scripts/script.js"></script>
+  </body>
+</html>
