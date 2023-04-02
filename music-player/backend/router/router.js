@@ -11,6 +11,7 @@ router.delete("/playlists/:id", deletePlaylist);
 router.get("/playlist-tracks", getAllTracks);
 router.get("/playlist-tracks/:playlist_id", getPlaylistTracks);
 router.post("/playlist-tracks/:playlist_id", addToPlaylist);
+router.delete("/playlist-tracks/:playlist_id/:track_id", deleteTrack);
 
 async function getAllPlaylists(req, res) {
   try {
@@ -89,6 +90,19 @@ async function deletePlaylist(req, res) {
     // res.status(204).send(delPlaylistTracks);
     const delPlaylist = await query(sql, id);
     res.status(204).send(delPlaylist);
+    // NEMUSIM POSILAT DATA PO SMAZANI
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function deleteTrack(req, res) {
+  try {
+    const { playlist_id, track_id } = req.params;
+    const sql =
+      "DELETE FROM playlist_tracks WHERE playlist_id = ? AND track_id = ?";
+    const delTrack = await query(sql, [playlist_id, track_id]);
+    res.status(204).send();
   } catch (err) {
     console.error(err);
   }

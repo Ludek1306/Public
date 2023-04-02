@@ -32,11 +32,17 @@
           <div class="current-track-name">Testing name for song</div>
           <div class="current-track-artist">Blueberry</div>
         </div>
+				<form class="select-playlist">
+					<label for="playlist-dropdown">Select playlist:</label>
+					<select name="playlist-name" id="playlist-dropdown">						
+					</select>					
+					<input type="submit" value="Submit">
+				</form>
         <div class="add-to-playlist">
-          <div onclick="addToSelectedPlaylist()">
+          <div>
             <img class="cross" src="./assets/img/plus.png" alt="" />
           </div>
-          <div class="add-to-favorite" onclick="addToFavoritePlaylist()">
+          <div class="add-to-favorite" onclick="addToSelectedPlaylist()">
             <img class="star" src="./assets/img/star.svg" alt="" />
           </div>
         </div>

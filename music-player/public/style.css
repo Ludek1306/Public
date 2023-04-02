@@ -168,6 +168,19 @@ body {
   justify-content: space-between;
 }
 
+.select-playlist {
+  width: 250px;
+  height: 30px;
+  position: absolute;
+  z-index: 10;
+  display: flex;
+}
+
+.select-playlist select {
+  /* width: 100%; */
+  max-width: 50%;
+}
+
 .current-track {
   width: 200px;
   padding: 10px 0 0 10px;
@@ -252,6 +265,10 @@ body {
 
 .songs-duration {
   margin-right: 10px;
+}
+
+.songs-delete {
+  padding-right: 10px;
 }
 
 .control-panel-container {

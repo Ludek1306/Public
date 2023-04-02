@@ -17,6 +17,8 @@ let currentTrack = document.createElement("audio");
 
 let selectPlaylists = document.querySelectorAll(".span-playlist");
 
+let dropdown = document.getElementById("playlist-dropdown");
+
 let trackIndex = 0;
 let isPlaying = false;
 let isRandom = false;
@@ -73,9 +75,11 @@ function fetchPlayLists() {
 }
 
 function renderPlaylists(playlist) {
+  dropdown.innerHTML = "";
   playlistsInventory.innerHTML =
     "<li onclick='fetchAllTracks()'>All Tracks</li>";
   playlist.forEach((e) => {
+    // PLAYLISTS:
     const li = document.createElement("li");
     li.setAttribute("id", e.id);
     li.setAttribute("class", "load-tracks");
@@ -89,6 +93,12 @@ function renderPlaylists(playlist) {
       li.appendChild(deleteButton);
     }
     playlistsInventory.appendChild(li);
+    // DROPDOWN PLAYLISTS:
+    const option = document.createElement("option");
+    option.setAttribute("value", e.title);
+    option.setAttribute("dropdown-id", e.id);
+    option.textContent = e.title;
+    dropdown.appendChild(option);
   });
   const toDelete = document.querySelectorAll(".span-playlist");
   const toLoad = document.querySelectorAll(".load-tracks");
@@ -124,6 +134,34 @@ function deletePlaylist(playlists) {
   });
 }
 
+function deleteTrack(tracks) {
+  tracks.forEach((e) => {
+    e.addEventListener("click", () => {
+      const parentNode = e.parentNode;
+      const trackId = parentNode.getAttribute("track-id");
+      // const id = e.getAttribute("id");
+      fetch(`/playlist-tracks/${activePlaylist}/${trackId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json",
+        },
+      })
+        .then((res) => {
+          if (res.ok) {
+            console.log("DELETE track request successful");
+            fetchPlayLists();
+          } else {
+            console.log("DELETE track request unsuccessful");
+          }
+          return res;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    });
+  });
+}
+
 function fetchAllTracks() {
   fetch("/playlist-tracks")
     .then((response) => {
@@ -149,7 +187,7 @@ function fetchSelectedPlaylistTracks(playlist) {
   playlist.forEach((e) => {
     e.addEventListener("click", () => {
       const id = e.getAttribute("id");
-      console.log(id);
+      console.log("active id:", id);
       activePlaylist = id;
       fetch(`/playlist-tracks/${id}`)
         .then((response) => {
@@ -185,24 +223,30 @@ function renderTracks(song) {
     const divId = document.createElement("div");
     const divName = document.createElement("div");
     const divDuration = document.createElement("div");
+    const divDelete = document.createElement("div");
     divId.setAttribute("class", "songs-id");
     divName.setAttribute("class", "songs-name");
     divDuration.setAttribute("class", "songs-duration");
+    divDelete.setAttribute("class", "songs-delete");
     divId.textContent = index;
     divName.textContent = e.name;
     divDuration.textContent = "03:30";
+    divDelete.textContent = "X";
     li.setAttribute("class", "songs");
     li.setAttribute("music-list-id", track);
     li.setAttribute("track-id", e.music_id);
     li.appendChild(divId);
     li.appendChild(divName);
     li.appendChild(divDuration);
+    li.appendChild(divDelete);
     songsList.appendChild(li);
     index++;
     track++;
   });
   const toPlay = document.querySelectorAll(".songs");
+  const trackToDelete = document.querySelectorAll(".songs-delete");
   // playSelectedTrack(toPlay);
+  deleteTrack(trackToDelete);
   playSelectedTrack(toPlay);
 }
 
@@ -210,19 +254,28 @@ function playSelectedTrack(tracks) {
   tracks.forEach((e) => {
     e.addEventListener("click", () => {
       // const track = e.getAttribute("track-id");
-      trackIndex = e.getAttribute("music-list-id");
+      trackIndex = Number(e.getAttribute("music-list-id"));
       loadTrack(trackIndex);
       playTrack();
     });
   });
 }
 
-function addToSelectedPlaylist() {}
+const form = document.querySelector(".select-playlist");
 
-function addToFavoritePlaylist() {
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const select = document.getElementById("playlist-dropdown");
+  const selectedOption = select.options[select.selectedIndex];
+  const selectedOptionId = Number(selectedOption.getAttribute("dropdown-id"));
+  addToSelectedPlaylist(selectedOptionId);
+});
+
+function addToSelectedPlaylist(playlistId = 1) {
+  // const playlistId = selectedOptionId || 1;
   const musicId = musicList[trackIndex].music_id;
   console.log("this is music id for add to playlist:", musicId);
-  fetch("/playlist-tracks/1", {
+  fetch(`/playlist-tracks/${playlistId}`, {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -245,9 +298,37 @@ function addToFavoritePlaylist() {
     });
 }
 
+// function addToFavoritePlaylist(playlistId = 1) {
+//   const musicId = musicList[trackIndex].music_id;
+//   console.log("this is music id for add to playlist:", musicId);
+//   fetch(`/playlist-tracks/${playlistId}`, {
+//     method: "POST",
+//     headers: {
+//       "Content-type": "application/json",
+//     },
+//     body: JSON.stringify({
+//       track_id: musicId,
+//     }),
+//   })
+//     .then((response) => {
+//       if (!response.ok) {
+//         throw new Error("Failed to add track to playlist.");
+//       }
+//       return response.json();
+//     })
+//     // .then((data) => {
+//     // 	console.log(`New track added to playlist ${activePlaylist}:`)
+//     // })
+//     .catch((err) => {
+//       console.error(err);
+//     });
+// }
+
 function loadTrack(trackIndex) {
   clearInterval(updateTimer);
   reset();
+  console.log("actul index:", trackIndex);
+  console.log("load track", musicList);
 
   currentTrack.src = musicList[trackIndex].path;
   // currentTrack.setAttribute("current-id", )
@@ -317,6 +398,7 @@ function nextTrack() {
   } else {
     trackIndex = 0;
   }
+  console.log("next trackIndex:", trackIndex);
   loadTrack(trackIndex);
   playTrack();
 }
