@@ -1,4 +1,5 @@
 // let nowPlaying = document.querySelector(".now-playing");
+
 // let trackArt = document.querySelector(".track-art");
 let trackName = document.querySelector(".current-track-name");
 let trackArtist = document.querySelector(".current-track-artist");
@@ -22,6 +23,7 @@ let isRandom = false;
 let updateTimer;
 let musicList = [];
 let playlists = [];
+let activePlaylist = 0;
 
 // PLAYLISTS VARIABLES
 let isCreating = true;
@@ -61,6 +63,7 @@ function fetchPlayLists() {
     .then((data) => {
       playlists = data;
       console.log("checking playlists", playlists);
+      // activePlaylist = playlists[0].id;
       renderPlaylists(playlists);
       fetchAllTracks();
     })
@@ -70,12 +73,16 @@ function fetchPlayLists() {
 }
 
 function renderPlaylists(playlist) {
-  playlistsInventory.innerHTML = "<li>All Tracks</li>";
+  playlistsInventory.innerHTML =
+    "<li onclick='fetchAllTracks()'>All Tracks</li>";
   playlist.forEach((e) => {
     const li = document.createElement("li");
+    li.setAttribute("id", e.id);
+    li.setAttribute("class", "load-tracks");
     const deleteButton = document.createElement("span");
     deleteButton.setAttribute("class", "span-playlist");
-    deleteButton.setAttribute("id", e.id);
+    // POTREBUJU SPAN CLASS??? NEMUYU POUZIT LI CLASS???
+    // deleteButton.setAttribute("id", e.id);
     deleteButton.textContent = "X";
     li.textContent = e.title;
     if (e.system_rank.data[0] === 0) {
@@ -83,16 +90,18 @@ function renderPlaylists(playlist) {
     }
     playlistsInventory.appendChild(li);
   });
-  selectPlaylists = document.querySelectorAll(".span-playlist");
-  console.log(selectPlaylists);
-
-  deletePlaylist(selectPlaylists);
+  const toDelete = document.querySelectorAll(".span-playlist");
+  const toLoad = document.querySelectorAll(".load-tracks");
+  deletePlaylist(toDelete);
+  fetchSelectedPlaylistTracks(toLoad);
 }
 
 function deletePlaylist(playlists) {
   playlists.forEach((e) => {
     e.addEventListener("click", () => {
-      const id = e.getAttribute("id");
+      const parentNode = e.parentNode;
+      const id = parentNode.getAttribute("id");
+      // const id = e.getAttribute("id");
       fetch(`/playlists/${id}`, {
         method: "DELETE",
         headers: {
@@ -124,8 +133,10 @@ function fetchAllTracks() {
       return response.json();
     })
     .then((data) => {
+      trackIndex = 0;
       musicList = data;
       console.log("this is music list", data);
+      activePlaylist = 0;
       renderTracks(data);
       loadTrack(trackIndex);
     })
@@ -134,8 +145,41 @@ function fetchAllTracks() {
     });
 }
 
+function fetchSelectedPlaylistTracks(playlist) {
+  playlist.forEach((e) => {
+    e.addEventListener("click", () => {
+      const id = e.getAttribute("id");
+      console.log(id);
+      activePlaylist = id;
+      fetch(`/playlist-tracks/${id}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to fetch tracks data!");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          musicList = data;
+          console.log("this is music list from selected playlist:", data);
+          renderTracks(data);
+          if (data.length) {
+            trackIndex = 0;
+            loadTrack(trackIndex);
+          } else {
+            clearCurrentTrackInfo();
+          }
+        })
+        .catch((err) => {
+          console.error("Error fetchig data: ", err);
+        });
+    });
+  });
+}
+
 function renderTracks(song) {
   songsList.innerHTML = "";
+  let index = 1;
+  let track = 0;
   song.forEach((e) => {
     const li = document.createElement("li");
     const divId = document.createElement("div");
@@ -144,15 +188,61 @@ function renderTracks(song) {
     divId.setAttribute("class", "songs-id");
     divName.setAttribute("class", "songs-name");
     divDuration.setAttribute("class", "songs-duration");
-    divId.textContent = e.id;
+    divId.textContent = index;
     divName.textContent = e.name;
     divDuration.textContent = "03:30";
     li.setAttribute("class", "songs");
+    li.setAttribute("music-list-id", track);
+    li.setAttribute("track-id", e.music_id);
     li.appendChild(divId);
     li.appendChild(divName);
     li.appendChild(divDuration);
     songsList.appendChild(li);
+    index++;
+    track++;
   });
+  const toPlay = document.querySelectorAll(".songs");
+  // playSelectedTrack(toPlay);
+  playSelectedTrack(toPlay);
+}
+
+function playSelectedTrack(tracks) {
+  tracks.forEach((e) => {
+    e.addEventListener("click", () => {
+      // const track = e.getAttribute("track-id");
+      trackIndex = e.getAttribute("music-list-id");
+      loadTrack(trackIndex);
+      playTrack();
+    });
+  });
+}
+
+function addToSelectedPlaylist() {}
+
+function addToFavoritePlaylist() {
+  const musicId = musicList[trackIndex].music_id;
+  console.log("this is music id for add to playlist:", musicId);
+  fetch("/playlist-tracks/1", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      track_id: musicId,
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to add track to playlist.");
+      }
+      return response.json();
+    })
+    // .then((data) => {
+    // 	console.log(`New track added to playlist ${activePlaylist}:`)
+    // })
+    .catch((err) => {
+      console.error(err);
+    });
 }
 
 function loadTrack(trackIndex) {
@@ -160,6 +250,7 @@ function loadTrack(trackIndex) {
   reset();
 
   currentTrack.src = musicList[trackIndex].path;
+  // currentTrack.setAttribute("current-id", )
   currentTrack.load();
 
   trackName.textContent = musicList[trackIndex].name;
@@ -168,6 +259,11 @@ function loadTrack(trackIndex) {
   updateTimer = setInterval(setUpdate, 1000);
 
   currentTrack.addEventListener("ended", nextTrack);
+}
+
+function clearCurrentTrackInfo() {
+  trackName.textContent = "";
+  trackArtist.textContent = "";
 }
 
 function reset() {
@@ -322,8 +418,8 @@ function addPlaylist() {
       body: JSON.stringify({
         title: title,
       }),
-    }).catch((error) => {
-      console.error(error);
+    }).catch((err) => {
+      console.error(err);
     });
     cancelPlaylist();
     fetchPlayLists();
