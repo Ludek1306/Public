@@ -138,7 +138,14 @@ function deleteTrack(tracks) {
   tracks.forEach((e) => {
     e.addEventListener("click", () => {
       const parentNode = e.parentNode;
+      console.log("parent", parentNode);
       const trackId = parentNode.getAttribute("track-id");
+      // const musicListId = Number(parentNode.getAttribute("music-list-id"));
+
+      const child = e.children;
+      console.log("Child from delete", child);
+      const musicListId = Number(child[0].textContent) - 1;
+      console.log("child number is", musicListId);
       // const id = e.getAttribute("id");
       fetch(`/playlist-tracks/${activePlaylist}/${trackId}`, {
         method: "DELETE",
@@ -149,7 +156,8 @@ function deleteTrack(tracks) {
         .then((res) => {
           if (res.ok) {
             console.log("DELETE track request successful");
-            fetchPlayLists();
+            parentNode.remove();
+            clearTrack(musicListId);
           } else {
             console.log("DELETE track request unsuccessful");
           }
@@ -159,6 +167,37 @@ function deleteTrack(tracks) {
           console.error(err);
         });
     });
+  });
+}
+
+function clearTrack(id) {
+  console.log("id mazaneho tracku:", id);
+  musicList.splice(id, 1);
+  const trackNumber = document.querySelectorAll(".songs-id");
+  console.log("musicList length:", musicList.length);
+  if (musicList.length) {
+    console.log("delka je");
+    if (id === trackIndex) {
+      console.log("mazu hrajici");
+      trackIndex = 0;
+      pauseTrack();
+      loadTrack(trackIndex);
+    }
+    reloadIndexOfTracks(trackNumber);
+  } else {
+    console.log("uz delka neni");
+    pauseTrack();
+    noTrack();
+  }
+}
+
+function reloadIndexOfTracks(element) {
+  let index = 1;
+  element.forEach((e) => {
+    console.log("testing index", index);
+    e.textContent = index;
+    console.log("testing");
+    index += 1;
   });
 }
 
@@ -177,6 +216,7 @@ function fetchAllTracks() {
       activePlaylist = 0;
       renderTracks(data);
       loadTrack(trackIndex);
+      pauseTrack();
     })
     .catch((err) => {
       console.error("Error fetchig data: ", err);
@@ -189,29 +229,34 @@ function fetchSelectedPlaylistTracks(playlist) {
       const id = e.getAttribute("id");
       console.log("active id:", id);
       activePlaylist = id;
-      fetch(`/playlist-tracks/${id}`)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Failed to fetch tracks data!");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          musicList = data;
-          console.log("this is music list from selected playlist:", data);
-          renderTracks(data);
-          if (data.length) {
-            trackIndex = 0;
-            loadTrack(trackIndex);
-          } else {
-            clearCurrentTrackInfo();
-          }
-        })
-        .catch((err) => {
-          console.error("Error fetchig data: ", err);
-        });
+      refreshPlaylist(id);
+      pauseTrack();
     });
   });
+}
+
+function refreshPlaylist(id) {
+  fetch(`/playlist-tracks/${id}`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to fetch tracks data!");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      musicList = data;
+      console.log("this is music list from selected playlist:", data);
+      renderTracks(data);
+      if (data.length) {
+        trackIndex = 0;
+        loadTrack(trackIndex);
+      } else {
+        clearCurrentTrackInfo();
+      }
+    })
+    .catch((err) => {
+      console.error("Error fetchig data: ", err);
+    });
 }
 
 function renderTracks(song) {
@@ -220,10 +265,12 @@ function renderTracks(song) {
   let track = 0;
   song.forEach((e) => {
     const li = document.createElement("li");
+    const divPlay = document.createElement("div");
     const divId = document.createElement("div");
     const divName = document.createElement("div");
     const divDuration = document.createElement("div");
     const divDelete = document.createElement("div");
+    divPlay.setAttribute("class", "songs-play");
     divId.setAttribute("class", "songs-id");
     divName.setAttribute("class", "songs-name");
     divDuration.setAttribute("class", "songs-duration");
@@ -235,16 +282,18 @@ function renderTracks(song) {
     li.setAttribute("class", "songs");
     li.setAttribute("music-list-id", track);
     li.setAttribute("track-id", e.music_id);
-    li.appendChild(divId);
-    li.appendChild(divName);
-    li.appendChild(divDuration);
+    divPlay.appendChild(divId);
+    divPlay.appendChild(divName);
+    divPlay.appendChild(divDuration);
+    li.appendChild(divPlay);
     li.appendChild(divDelete);
     songsList.appendChild(li);
     index++;
     track++;
   });
-  const toPlay = document.querySelectorAll(".songs");
+  const toPlay = document.querySelectorAll(".songs-play");
   const trackToDelete = document.querySelectorAll(".songs-delete");
+
   // playSelectedTrack(toPlay);
   deleteTrack(trackToDelete);
   playSelectedTrack(toPlay);
@@ -253,8 +302,11 @@ function renderTracks(song) {
 function playSelectedTrack(tracks) {
   tracks.forEach((e) => {
     e.addEventListener("click", () => {
-      // const track = e.getAttribute("track-id");
-      trackIndex = Number(e.getAttribute("music-list-id"));
+      // trackIndex = Number(e.parentNode.getAttribute("music-list-id"));
+      const child = e.children;
+      console.log("SHow me child", child);
+      trackIndex = Number(child[0].textContent) - 1;
+      // console.log("child id:", childId);
       loadTrack(trackIndex);
       playTrack();
     });
@@ -342,6 +394,14 @@ function loadTrack(trackIndex) {
   currentTrack.addEventListener("ended", nextTrack);
 }
 
+function noTrack() {
+  clearInterval(updateTimer);
+  reset();
+  currentTrack.src = "";
+  trackName.textContent = "";
+  trackArtist.textContent = "";
+}
+
 function clearCurrentTrackInfo() {
   trackName.textContent = "";
   trackArtist.textContent = "";
@@ -374,6 +434,17 @@ function repeatTrack() {
 function playPauseTrack() {
   isPlaying ? pauseTrack() : playTrack();
 }
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === " ") {
+    event.preventDefault();
+    playPauseTrack();
+  } else if (event.key === "ArrowRight") {
+    nextTrack();
+  } else if (event.key === "ArrowLeft") {
+    prevTrack();
+  }
+});
 
 function playTrack() {
   currentTrack.play();
