@@ -3,6 +3,12 @@
 // let trackArt = document.querySelector(".track-art");
 let trackName = document.querySelector(".current-track-name");
 let trackArtist = document.querySelector(".current-track-artist");
+// let currentTrackContainer = document.querySelector(".current-track-container");
+
+const dropdownElement = document.querySelector(".select-playlist");
+const crossElement = document.querySelector(".add-to-playlist img");
+const randomTrackElement = document.querySelector(".random-track-off");
+const repeatTrackElement = document.querySelector(".repeat-track-off");
 
 let playPauseBtn = document.querySelector(".play-pause-track");
 let nextBtn = document.querySelector("next-track");
@@ -15,7 +21,7 @@ let totalDuration = document.querySelector(".total-duration");
 
 let currentTrack = document.createElement("audio");
 
-let selectPlaylists = document.querySelectorAll(".span-playlist");
+let selectPlaylists = document.querySelectorAll(".playlist-delete-button");
 
 let dropdown = document.getElementById("playlist-dropdown");
 
@@ -26,6 +32,8 @@ let updateTimer;
 let musicList = [];
 let playlists = [];
 let activePlaylist = 0;
+let isDropdown = false;
+let isRepeat = false;
 
 // PLAYLISTS VARIABLES
 let isCreating = true;
@@ -83,11 +91,12 @@ function renderPlaylists(playlist) {
     const li = document.createElement("li");
     li.setAttribute("id", e.id);
     li.setAttribute("class", "load-tracks");
-    const deleteButton = document.createElement("span");
-    deleteButton.setAttribute("class", "span-playlist");
+    const deleteButton = document.createElement("img");
+    deleteButton.setAttribute("class", "playlist-delete-button");
+    deleteButton.setAttribute("src", "./assets/img/plus.png");
     // POTREBUJU SPAN CLASS??? NEMUYU POUZIT LI CLASS???
     // deleteButton.setAttribute("id", e.id);
-    deleteButton.textContent = "X";
+    // deleteButton.textContent = "X";
     li.textContent = e.title;
     if (e.system_rank.data[0] === 0) {
       li.appendChild(deleteButton);
@@ -100,7 +109,7 @@ function renderPlaylists(playlist) {
     option.textContent = e.title;
     dropdown.appendChild(option);
   });
-  const toDelete = document.querySelectorAll(".span-playlist");
+  const toDelete = document.querySelectorAll(".playlist-delete-button");
   const toLoad = document.querySelectorAll(".load-tracks");
   deletePlaylist(toDelete);
   fetchSelectedPlaylistTracks(toLoad);
@@ -140,13 +149,8 @@ function deleteTrack(tracks) {
       const parentNode = e.parentNode;
       console.log("parent", parentNode);
       const trackId = parentNode.getAttribute("track-id");
-      // const musicListId = Number(parentNode.getAttribute("music-list-id"));
+      const musicListId = Number(parentNode.getAttribute("music-list-index"));
 
-      const child = e.children;
-      console.log("Child from delete", child);
-      const musicListId = Number(child[0].textContent) - 1;
-      console.log("child number is", musicListId);
-      // const id = e.getAttribute("id");
       fetch(`/playlist-tracks/${activePlaylist}/${trackId}`, {
         method: "DELETE",
         headers: {
@@ -171,33 +175,45 @@ function deleteTrack(tracks) {
 }
 
 function clearTrack(id) {
-  console.log("id mazaneho tracku:", id);
+  // console.log("id mazaneho tracku:", id);
   musicList.splice(id, 1);
-  const trackNumber = document.querySelectorAll(".songs-id");
+  const indexNumber = document.querySelectorAll(".songs-id");
+  // console.log("to pred elements", indexNumber);
+  const liIndex = document.querySelectorAll("[music-list-index]");
+  // console.log("li elements po smazani", liIndex);
   console.log("musicList length:", musicList.length);
   if (musicList.length) {
-    console.log("delka je");
+    // console.log("delka je");
     if (id === trackIndex) {
       console.log("mazu hrajici");
       trackIndex = 0;
       pauseTrack();
       loadTrack(trackIndex);
     }
-    reloadIndexOfTracks(trackNumber);
+    refreshIndexOfTracks(indexNumber);
+    refreshMusicListIndex(liIndex);
   } else {
-    console.log("uz delka neni");
+    // console.log("uz delka neni");
     pauseTrack();
     noTrack();
   }
 }
 
-function reloadIndexOfTracks(element) {
+function refreshIndexOfTracks(element) {
   let index = 1;
   element.forEach((e) => {
-    console.log("testing index", index);
+    // console.log("testing index", index);
     e.textContent = index;
-    console.log("testing");
     index += 1;
+  });
+}
+
+function refreshMusicListIndex(element) {
+  let index = 0;
+  element.forEach((e) => {
+    e.setAttribute("music-list-index", index);
+    // console.log("novy song index:", index);
+    index++;
   });
 }
 
@@ -214,7 +230,8 @@ function fetchAllTracks() {
       musicList = data;
       console.log("this is music list", data);
       activePlaylist = 0;
-      renderTracks(data);
+      const isAllTracks = true;
+      renderTracks(data, isAllTracks);
       loadTrack(trackIndex);
       pauseTrack();
     })
@@ -259,42 +276,47 @@ function refreshPlaylist(id) {
     });
 }
 
-function renderTracks(song) {
+function renderTracks(song, isAllTracks = false) {
   songsList.innerHTML = "";
   let index = 1;
-  let track = 0;
+  let musicListIndex = 0;
   song.forEach((e) => {
+    const duration = setDuration(e);
     const li = document.createElement("li");
     const divPlay = document.createElement("div");
     const divId = document.createElement("div");
     const divName = document.createElement("div");
     const divDuration = document.createElement("div");
-    const divDelete = document.createElement("div");
+    // const divDelete = document.createElement("div");
+    const imgDelete = document.createElement("img");
     divPlay.setAttribute("class", "songs-play");
     divId.setAttribute("class", "songs-id");
     divName.setAttribute("class", "songs-name");
     divDuration.setAttribute("class", "songs-duration");
-    divDelete.setAttribute("class", "songs-delete");
+    // divDelete.setAttribute("class", "songs-delete");
+    imgDelete.setAttribute("class", "songs-delete");
+    imgDelete.setAttribute("src", "./assets/img/plus.png");
     divId.textContent = index;
     divName.textContent = e.name;
-    divDuration.textContent = "03:30";
-    divDelete.textContent = "X";
+    divDuration.textContent = duration;
     li.setAttribute("class", "songs");
-    li.setAttribute("music-list-id", track);
+    li.setAttribute("music-list-index", musicListIndex);
     li.setAttribute("track-id", e.music_id);
     divPlay.appendChild(divId);
     divPlay.appendChild(divName);
     divPlay.appendChild(divDuration);
     li.appendChild(divPlay);
-    li.appendChild(divDelete);
+    if (!isAllTracks) {
+      // li.appendChild(divDelete);
+      li.appendChild(imgDelete);
+    }
     songsList.appendChild(li);
     index++;
-    track++;
+    musicListIndex++;
   });
   const toPlay = document.querySelectorAll(".songs-play");
   const trackToDelete = document.querySelectorAll(".songs-delete");
 
-  // playSelectedTrack(toPlay);
   deleteTrack(trackToDelete);
   playSelectedTrack(toPlay);
 }
@@ -302,11 +324,8 @@ function renderTracks(song) {
 function playSelectedTrack(tracks) {
   tracks.forEach((e) => {
     e.addEventListener("click", () => {
-      // trackIndex = Number(e.parentNode.getAttribute("music-list-id"));
-      const child = e.children;
-      console.log("SHow me child", child);
-      trackIndex = Number(child[0].textContent) - 1;
-      // console.log("child id:", childId);
+      trackIndex = Number(e.parentNode.getAttribute("music-list-index"));
+
       loadTrack(trackIndex);
       playTrack();
     });
@@ -414,21 +433,34 @@ function reset() {
 }
 
 function randomTrack() {
+  if (isRepeat === true) {
+    isRepeat = false;
+    repeatTrackElement.setAttribute("class", "repeat-track-off");
+  }
   isRandom ? pauseRandom() : playRandom();
 }
 
 function playRandom() {
   isRandom = true;
+  randomTrackElement.setAttribute("class", "random-track-on");
 }
 
 function pauseRandom() {
   isRandom = false;
+  randomTrackElement.setAttribute("class", "random-track-off");
 }
 
 function repeatTrack() {
-  let currentIndex = trackIndex;
-  loadTrack(currentIndex);
-  playTrack();
+  if ((isRandom = true)) {
+    pauseRandom();
+  }
+  if (isRepeat === false) {
+    isRepeat = true;
+    repeatTrackElement.setAttribute("class", "repeat-track-on");
+  } else {
+    isRepeat = false;
+    repeatTrackElement.setAttribute("class", "repeat-track-off");
+  }
 }
 
 function playPauseTrack() {
@@ -461,14 +493,17 @@ function pauseTrack() {
 }
 
 function nextTrack() {
-  if (trackIndex < musicList.length - 1 && isRandom === false) {
-    trackIndex += 1;
-  } else if (trackIndex < musicList.length - 1 && isRandom === true) {
-    let randomIndex = Number.parseInt(Math.random() * musicList.length);
-    trackIndex = randomIndex;
-  } else {
-    trackIndex = 0;
+  if (isRepeat === false) {
+    if (trackIndex < musicList.length - 1 && isRandom === false) {
+      trackIndex += 1;
+    } else if (trackIndex < musicList.length - 1 && isRandom === true) {
+      let randomIndex = Number.parseInt(Math.random() * musicList.length);
+      trackIndex = randomIndex;
+    } else {
+      trackIndex = 0;
+    }
   }
+
   console.log("next trackIndex:", trackIndex);
   loadTrack(trackIndex);
   playTrack();
@@ -526,6 +561,19 @@ function setUpdate() {
   }
 }
 
+function setDuration(e) {
+  let currentMinutes = Math.floor(e.duration / 60);
+  let currentSeconds = Math.floor(e.duration - currentMinutes * 60);
+  if (currentSeconds < 10) {
+    currentSeconds = "0" + currentSeconds;
+  }
+  if (currentMinutes < 10) {
+    currentMinutes = "0" + currentMinutes;
+  }
+
+  return currentMinutes + ":" + currentSeconds;
+}
+
 // PLAYLISTS
 
 const newPlaylist = document.querySelector(".insert-name");
@@ -537,22 +585,24 @@ function addCancelPlaylist() {
 
 function addPlaylist() {
   newPlaylist.textContent = "";
-  const formInput = document.createElement("form");
-  const inputName = document.createElement("input");
+  const form = document.createElement("form");
+  const input = document.createElement("input");
   const confirmButton = document.createElement("button");
-  // inputName.setAttribute("type", "text");
-  formInput.setAttribute("id", "playlist-form");
-  inputName.setAttribute("placeholder", "Name");
-  inputName.setAttribute("name", "title");
-  inputName.setAttribute("type", "text");
+  // input.setAttribute("type", "text");
+  form.setAttribute("id", "playlist-form");
+  input.setAttribute("placeholder", "Name");
+  input.setAttribute("name", "title");
+  input.setAttribute("type", "text");
+  input.setAttribute("required", "");
+  input.setAttribute("maxlength", "30");
   confirmButton.setAttribute("type", "submit");
   // confirmButton.setAttribute("onclick", "sendPlaylist()");
   confirmButton.textContent = "Create";
-  formInput.appendChild(inputName);
-  formInput.appendChild(confirmButton);
-  newPlaylist.appendChild(formInput);
+  form.appendChild(input);
+  form.appendChild(confirmButton);
+  newPlaylist.appendChild(form);
 
-  closePlaylist.setAttribute("id", "rotate-image-on");
+  closePlaylist.setAttribute("class", "rotate-image-on");
 
   // ADD NEW PLAYLIST WITH FORM
   const formPlaylist = document.getElementById("playlist-form");
@@ -560,7 +610,7 @@ function addPlaylist() {
 
   formPlaylist.addEventListener("submit", (e) => {
     e.preventDefault();
-    const title = formInput.elements.title.value;
+    const title = form.elements.title.value;
     console.log(title);
 
     fetch("/playlists", {
@@ -591,5 +641,19 @@ function cancelPlaylist() {
   newPlaylist.innerHTML = "";
   newPlaylist.textContent = "Playlists";
   isCreating = true;
-  closePlaylist.setAttribute("id", "");
+  closePlaylist.setAttribute("class", "cross");
+}
+
+// SHOW HIDE DROPDOWN
+
+function showHideDropdown() {
+  if (isDropdown === true) {
+    dropdownElement.setAttribute("id", "");
+    crossElement.setAttribute("class", "cross");
+    isDropdown = false;
+  } else if (isDropdown === false) {
+    dropdownElement.setAttribute("id", "select-playlist-id");
+    crossElement.setAttribute("class", "rotate-image-on");
+    isDropdown = true;
+  }
 }
