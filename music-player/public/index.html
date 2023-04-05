@@ -13,9 +13,12 @@
   <body>
 
     <div class="container">
-      <div class="logo-container">LOGO</div>
+      <div class="logo-container">
+        <span class="musicplayer-name">GRAY</span>
+        <span>MUSIC PLAYER</span>
+      </div>
       <div class="artwork-container">
-        <img src="./assets/img/music-placeholder.png" alt="" />
+        <img class="artwork-img" src="./assets/img/album-covers/music-placeholder.png" alt="" />
       </div>
 
       <div class="playlist-container">
@@ -55,10 +58,7 @@
 
       <div class="songs-container">
         <ul class="songs-list">
-          <li class="songs">
-            <!-- <div class="songs-id">1</div> -->
-            <div class="songs-name">Name of the Song</div>
-            <div class="songs-duration">3:30</div>
+          <li class="songs">            
           </li>
         </ul>
       </div>
@@ -68,7 +68,7 @@
 					<img src="./assets/img/rewind.svg" alt="" />
 				</div>
 				<div class="play-pause-track" onclick="playPauseTrack()">
-					<img src="./assets/img/play.svg" style="height: 20px" alt="" />
+					<img src="./assets/img/play.svg" alt="" />
 				</div>
 				<div class="next-track" onclick="nextTrack()">
 					<img src="./assets/img/forward.svg" alt="" />
@@ -87,11 +87,11 @@
           <div class="total-duration">00:00</div>
         </div>
 
-				<div class="random-track-off" onclick="randomTrack()">
-					<img src="./assets/img/shuffle.svg" alt="" />
+				<div  onclick="randomTrack()">
+					<img class="random-track-off" src="./assets/img/shuffle.svg" alt="" />
 				</div>
-				<div class="repeat-track-off" onclick="repeatTrack()">
-					<img src="./assets/img/repeat1.svg" alt="" />
+				<div  onclick="repeatTrack()">
+					<img class="repeat-track-off" src="./assets/img/repeat1.svg" alt="" />
 				</div>
 
         <div class="slider-container">

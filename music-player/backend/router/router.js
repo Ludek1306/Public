@@ -36,7 +36,7 @@ async function getAllTracks(req, res) {
 async function getPlaylistTracks(req, res) {
   try {
     const { playlist_id } = req.params;
-    const sql = `SELECT music.music_id, music.name, music.artist, music.duration, music.path 
+    const sql = `SELECT music.music_id, music.name, music.artist, music.duration, music.path, music.album_cover 
 		FROM music 
 		JOIN playlist_tracks ON playlist_tracks.track_id = music.music_id 
 		JOIN playlists ON playlist_tracks.playlist_id = playlists.id 
