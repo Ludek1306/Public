@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Music Player</title>
+    <title>Gray Music Player</title>
     <link rel="stylesheet" href="./style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,7 +26,7 @@
           <div class="insert-name">
 						Playlists					
 					</div>
-          <div class="add-new-playlist" onclick="addCancelPlaylist()"><img class="cross" src="./assets/img/plus.png" alt="" /></div>
+          <div class="add-new-playlist"><img class="cross" src="./assets/img/plus.png" alt="" /></div>
         </div>				
 					<ul class="playlist-inventory">					
           <li>All Tracks</li>          
@@ -47,10 +47,10 @@
 				</form>
         
         <div class="add-to-playlist">
-          <div onclick="showHideDropdown()">
+          <div class="show-hide-dropdown" >
             <img class="cross" src="./assets/img/plus.png" alt="" />
           </div>
-          <div class="add-to-favorite" onclick="addToSelectedPlaylist()">
+          <div class="add-to-favorite">
             <img class="star" src="./assets/img/star.svg" alt="" />
           </div>
         </div>
@@ -64,13 +64,13 @@
       </div>
 
       <div class="control-panel-container">
-				<div class="prev-track" onclick="prevTrack()">
+				<div class="prev-track">
 					<img src="./assets/img/rewind.svg" alt="" />
 				</div>
-				<div class="play-pause-track" onclick="playPauseTrack()">
-					<img src="./assets/img/play.svg" alt="" />
+				<div>
+					<img class="play-pause-track" src="./assets/img/play.svg" alt="" />
 				</div>
-				<div class="next-track" onclick="nextTrack()">
+				<div class="next-track">
 					<img src="./assets/img/forward.svg" alt="" />
 				</div>
 
@@ -81,16 +81,15 @@
             min="1"
             max="100"
             value="0"
-            class="seek-slider"
-            onchange="seekTo()"
+            class="seek-slider"            
           />
           <div class="total-duration">00:00</div>
         </div>
 
-				<div  onclick="randomTrack()">
+				<div>
 					<img class="random-track-off" src="./assets/img/shuffle.svg" alt="" />
 				</div>
-				<div  onclick="repeatTrack()">
+				<div>
 					<img class="repeat-track-off" src="./assets/img/repeat1.svg" alt="" />
 				</div>
 
@@ -101,14 +100,12 @@
             min="1"
             max="100"
             value="99"
-            class="volume-slider"
-            onchange="setVolume()"
+            class="volume-slider"           
           />
-        </div>
+        </div>        
     </div>
 
-		<script src="./scripts/script.js">
-			
-		</script>
+		<script type="module" src="./scripts/palylists-tracks.js"></script>
+    <script type="module" src="./scripts/ui.js"></script>      
   </body>
 </html>

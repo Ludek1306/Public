@@ -1,3 +1,4 @@
+const asyncMiddleware = require("../middleware/async");
 const express = require("express");
 const query = require("../database/db");
 const router = express.Router();
@@ -5,7 +6,7 @@ const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: false }));
 
-router.get("/playlists", getAllPlaylists);
+router.get("/playlists", asyncMiddleware(getAllPlaylists));
 router.post("/playlists", addPlaylist);
 router.delete("/playlists/:id", deletePlaylist);
 router.get("/playlist-tracks", getAllTracks);
@@ -14,13 +15,15 @@ router.post("/playlist-tracks/:playlist_id", addToPlaylist);
 router.delete("/playlist-tracks/:playlist_id/:track_id", deleteTrack);
 
 async function getAllPlaylists(req, res) {
-  try {
-    const sql = "SELECT * FROM playlists";
-    const getPlaylists = await query(sql);
-    res.send(getPlaylists);
-  } catch (err) {
-    console.error(err);
-  }
+  // try {
+  const sql = "SELECT * FROM playlists";
+  const getPlaylists = await query(sql);
+  res.send(getPlaylists);
+  // } catch (err) {
+  //   next(err);
+  //   // console.error(err);
+  //   // res.status(500).send("Database error.");
+  // }
 }
 
 async function getAllTracks(req, res) {
