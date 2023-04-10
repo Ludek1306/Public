@@ -4,7 +4,6 @@ import {
   postNewPlaylist,
   currentTrack,
   addToSelectedPlaylist,
-  // addCancelPlaylist,
   trackIndexPlus,
   trackIndexMinus,
   trackIndexZero,
@@ -13,13 +12,14 @@ import {
   loadTrack,
   addHighlight,
   removeHighlightTrack,
-} from "./palylists-tracks.js";
+  interval,
+  intervalClear,
+} from "./index.js";
 
 const dropdownForm = document.querySelector(".select-playlist");
 const crossElement = document.querySelector(".add-to-playlist img");
 const newPlaylist = document.querySelector(".insert-name");
 const closePlaylist = document.querySelector(".cross");
-
 const showHideDropdownElement = document.querySelector(".show-hide-dropdown");
 const addCancelPlaylistElement = document.querySelector(".add-new-playlist");
 const addToFavoriteElement = document.querySelector(".add-to-favorite");
@@ -36,8 +36,6 @@ let isPlaying = false;
 let isRepeat = false;
 let isRandom = false;
 let isCreatingPlaylist = true;
-
-// loadUserInterface();
 
 export function loadUserInterface() {
   showHideDropdownElement.addEventListener("click", () => {
@@ -110,6 +108,7 @@ function playPauseTrack() {
 }
 
 export function playTrack() {
+  interval();
   currentTrack.play();
   isPlaying = true;
   playPauseBtn.setAttribute("src", "./assets/img/pause.svg");
@@ -117,6 +116,7 @@ export function playTrack() {
 }
 
 export function pauseTrack() {
+  intervalClear();
   currentTrack.pause();
   isPlaying = false;
   playPauseBtn.setAttribute("src", "./assets/img/play.svg");
@@ -128,7 +128,6 @@ function prevTrack() {
   if (trackIndex > 0) {
     trackIndexMinus();
   } else {
-    // trackIndex = musicList.length - 1;
     trackIndexMusicListLength();
   }
   loadTrack(trackIndex);
@@ -142,8 +141,6 @@ export function nextTrack() {
     if (trackIndex < musicList.length - 1 && isRandom === false) {
       trackIndexPlus();
     } else if (trackIndex < musicList.length - 1 && isRandom === true) {
-      // let randomIndex = Number.parseInt(Math.random() * musicList.length);
-      // trackIndex = randomIndex;
       trackIndexToRandom();
     } else {
       trackIndexZero();
@@ -199,10 +196,10 @@ function addCancelPlaylist() {
 }
 
 function addNewPlaylist() {
-  newPlaylist.textContent = "";
   const form = document.createElement("form");
   const input = document.createElement("input");
   const confirmButton = document.createElement("button");
+  newPlaylist.textContent = "";
   form.setAttribute("id", "playlist-form");
   input.setAttribute("placeholder", "Name");
   input.setAttribute("name", "title");
@@ -215,6 +212,7 @@ function addNewPlaylist() {
   form.appendChild(confirmButton);
   newPlaylist.appendChild(form);
   closePlaylist.setAttribute("class", "rotate-image-on");
+
   const formPlaylist = document.getElementById("playlist-form");
   postNewPlaylist(formPlaylist);
 }

@@ -1,10 +1,8 @@
 const error = require("./middleware/error");
-
 const express = require("express");
 const app = express();
 const PORT = 3000;
 const path = require("path");
-// const fs = require("fs")
 const router = require("./router/router");
 
 app.use(express.json());

@@ -7,8 +7,9 @@
     <title>Gray Music Player</title>
     <link rel="stylesheet" href="./style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&family=Open+Sans:wght@300;400&family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&family=Open+Sans:wght@300;400&family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
   </head>
   <body>
 
@@ -35,17 +36,15 @@
 			
       <div class="current-track-container">
         <div class="current-track">
-          <div class="current-track-name">Testing name for song</div>
-          <div class="current-track-artist">Blueberry</div>
+          <div class="current-track-name"></div>
+          <div class="current-track-artist"></div>
         </div>
-
 				<form class="select-playlist">
 					<label for="playlist-dropdown">Select playlist:</label>
 					<select name="playlist-name" id="playlist-dropdown">						
 					</select>					
 					<input type="submit" value="Submit">
-				</form>
-        
+				</form>        
         <div class="add-to-playlist">
           <div class="show-hide-dropdown" >
             <img class="cross" src="./assets/img/plus.png" alt="" />
@@ -73,7 +72,6 @@
 				<div class="next-track">
 					<img src="./assets/img/forward.svg" alt="" />
 				</div>
-
         <div class="slider-container">
           <div class="current-time">00:00</div>
           <input
@@ -85,14 +83,12 @@
           />
           <div class="total-duration">00:00</div>
         </div>
-
 				<div>
 					<img class="random-track-off" src="./assets/img/shuffle.svg" alt="" />
 				</div>
 				<div>
 					<img class="repeat-track-off" src="./assets/img/repeat1.svg" alt="" />
 				</div>
-
         <div class="slider-container">
           <img src="./assets/img/volume.svg" alt="" />
           <input
@@ -105,7 +101,7 @@
         </div>        
     </div>
 
-		<script type="module" src="./scripts/palylists-tracks.js"></script>
+		<script type="module" src="./scripts/index.js"></script>
     <script type="module" src="./scripts/ui.js"></script>      
   </body>
 </html>
