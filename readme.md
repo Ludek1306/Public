@@ -8,6 +8,8 @@ Each project has a description file in its directory.
 
 The Music Player with REST API is a web-based application that allows users to create and manage their playlists, add and delete tracks, and control playback functionality.
 
+<img src="./assets/music-player-printscreen.png" style="border: 2px solid grey; margin-bottom: 10px; width: 75%">
+
 ## Tools
 
 JavaScript, Express.js, Node.js, and MySQL Workbench.
